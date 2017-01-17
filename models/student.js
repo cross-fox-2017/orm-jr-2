@@ -55,10 +55,11 @@ class Student {
       })
     })
   }
-  static findAll(connection, cb){
-    let FINDALL = "SELECT * FROM students"
+  static findAll(connection, param={limit:100,offset:0}){
+    let FINDALL = "SELECT * FROM students LIMIT ? OFFSET ?"
+    let that = this
     connection.serialize(function(){
-      connection.all(FINDALL, cb)
+      connection.all(FINDALL, param.limit, param.offset, that.cb)
     })
   }
   static where(connection, param, cb){
@@ -75,6 +76,9 @@ class Student {
     } else {
       console.log(err);
     }
+  }
+  static tes(log){
+    console.log(log.limit);
   }
 }
 
