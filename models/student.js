@@ -91,6 +91,18 @@ class Student {
     })
     // return true
   }
+  static findOrCreate(db, obj){
+    let FIND_OR_CREATE = `SELECT * FROM students WHERE firstname = '${obj.firstname}' AND lastname = '${obj.lastname}' AND cohortId = ${obj.cohortId}`
+    db.serialize(function () {
+      db.all(FIND_OR_CREATE, function (err, students) {
+        if (!err && students.length > 0) {
+          console.log('Student is Exist');
+        }else {
+          Student.createStudent()
+        }
+      })
+    })
+  }
 }
 
 export default Student
