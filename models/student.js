@@ -93,7 +93,7 @@ class Student {
   static findOrCreate(connection,student){
     var query= `SELECT * FROM students
                 WHERE firstname ='${student.firstname}' AND lastname='${student.lastname}'
-                AND cohort_id = '${student.cohort_id}'`
+                AND cohort_id = ${student.cohort_id}`
     let c = connection
 
     c.serialize(function(){
