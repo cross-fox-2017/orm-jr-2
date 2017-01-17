@@ -68,6 +68,27 @@ class Student {
       connection.all(WHERE, cb)
     })
   }
+  static findOrCreate(connection, student){
+    let CEK = `SELECT * FROM students WHERE firstname = '${student.firstname}' AND lastname = '${student.lastname}' AND cohort_id = '${student.cohort_id}'`
+    let CREATE = "INSERT INTO students (firstname, lastname, cohort_id) VALUES (?, ?, ?)"
+    connection.serialize(function(){
+      connection.all(CEK, function(err, data){
+        if (!err && data.length == 0){
+          connection.run(CREATE, student.firstname, student.lastname, student.cohort_id, function (err){
+            if (!err){
+              console.log('student created');
+            } else {
+              console.log(err);
+            }
+          })
+        } else if(!err){
+          console.log(data);
+        } else {
+          console.log(err);
+        }
+      })
+    })
+  }
   static cb(err, data){
     if(!err){
       for (let i = 0; i < data.length; i++){

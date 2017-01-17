@@ -54,16 +54,38 @@ class Cohort {
       })
     })
   }
-  static findAll(connection, cb){
-    let FINDALL = "SELECT * FROM cohorts"
+  static findAll(connection, param={limit:100,offset:0}){
+    let FINDALL = "SELECT * FROM cohorts LIMIT ? OFFSET ?"
+    let that = this
     connection.serialize(function(){
-      connection.all(FINDALL, cb)
+      connection.all(FINDALL, param.limit, param.offset, that.cb)
     })
   }
   static where(connection, cohort, cb){
     let WHERE = `SELECT * FROM cohorts WHERE ${param}`
     connection.serialize(function(){
       connection.all(WHERE, cb)
+    })
+  }
+  static findOrCreate(connection, cohort){
+    let CEK = `SELECT * FROM cohorts WHERE name = '${cohort.name}'`
+    let CREATE = "INSERT INTO cohorts (name) VALUES (?)"
+    connection.serialize(function(){
+      connection.all(CEK, function(err, data){
+        if (!err && data.length == 0){
+          connection.run(CREATE, cohort.name, function (err){
+            if (!err){
+              console.log('cohort created');
+            } else {
+              console.log(err);
+            }
+          })
+        } else if(!err){
+          console.log(data);
+        } else {
+          console.log(err);
+        }
+      })
     })
   }
   static cb(err, data){
