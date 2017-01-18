@@ -86,7 +86,7 @@ class Student {
     let add = `INSERT INTO students (firstname, lastname, cohort_id) VALUES ('${student.firstname}', '${student.lastname}', '${student.cohort_id}');`;
     db.serialize(function () {
       db.all(check, function (err, data) {
-        if(!err && data.length > 0) { // belajar lagi
+        if(!err && data.length > 0) { // TODO belajar lagi
           console.log('Data already exist.');
         }
         else {
