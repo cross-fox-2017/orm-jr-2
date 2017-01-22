@@ -50,7 +50,7 @@ class Student {
   }
 
   //Driver Code test case
-  // Student.findAll(dbModel.connection, {limit:1, offset:1},
+  // Student.findAll(dbModel.connection, {limit:3, offset:1},
   // function(err, data){
   //   if(!err){
   //     for(var i = 0; i < data.length; i++){
