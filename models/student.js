@@ -68,33 +68,61 @@ class Student {
 		})
 	}
 
-  static where(connection, value, cb){
-		let WHERE_STUDENT = `SELECT * FROM students WHERE ${value};`
+  // static where(connection, value, cb){
+	// 	let WHERE_STUDENT = `SELECT * FROM students WHERE ${value};`
+  //
+	// 	connection.serialize(function() {
+  // 			connection.all(WHERE_STUDENT, function(err, rows) {
+  //         if(err) {
+  //           cb(null, err)
+  //         } else {
+  //           cb(rows)
+  //         }
+  //       })
+	//   })
+	// }
+  //
+	// static findAll(connection, option = {limit: 100, offset: 0}, cb){
+	// 	let FIND_ALL_STUDENT = `SELECT students.*, cohorts.name FROM students LEFT JOIN cohorts ON students.cohort_id = cohorts.id LIMIT ${option.limit} OFFSET ${option.offset};`
+  //
+	// 	connection.serialize(function() {
+  // 			connection.all(FIND_ALL_STUDENT, function(err, rows) {
+  //         if(err) {
+  //           cb(null, err)
+  //         } else {
+  //           cb(rows)
+  //         }
+  //       })
+	// 	})
+	// }
 
-		connection.serialize(function() {
-  			connection.all(WHERE_STUDENT, function(err, rows) {
-          if(err) {
-            cb(null, err)
-          } else {
-            cb(rows)
-          }
-        })
-	  })
-	}
+  static findAll (connection, option = {limit: 100, offset: 0}, cb) {
+    let allData = `SELECT students.*, cohorts.cohortname FROM students LEFT JOIN cohorts ON students.cohort_id = cohorts.id LIMIT ${option.limit} OFFSET ${option.offset};`
+    connection.serialize(function () {
+      connection.all(allData, function (err, rows) {
+        if (err) {
+          cb(null,err);
+        }
+        else {
+          cb(rows);
+        }
+      });
+    });
+  }
 
-	static findAll(connection, option = {limit: 100, offset: 0}, cb){
-		let FIND_ALL_STUDENT = `SELECT students.*, cohorts.name FROM students LEFT JOIN cohorts ON students.cohort_id = cohorts.id LIMIT ${option.limit} OFFSET ${option.offset};`
-
-		connection.serialize(function() {
-  			connection.all(FIND_ALL_STUDENT, function(err, rows) {
-          if(err) {
-            cb(null, err)
-          } else {
-            cb(rows)
-          }
-        })
-		})
-	}
+  static where (connection, value, cb) {
+    let whereData = `SELECT * FROM students WHERE ${value};`
+    connection.serialize(function () {
+      connection.all(whereData, function (err, rows) {
+        if (err) {
+          cb(null,err);
+        }
+        else {
+          cb(rows);
+        }
+      });
+    });
+  }
 
   static findOrCreate(connection, data) {
     let FIND_OR_CREATE = `INSERT OR IGNORE INTO students (firstname, lastname, cohort_id) VALUES ('${data.firstname}', '${data.lastname}', '${data.cohort_id}');`
@@ -123,26 +151,6 @@ export default Student
 // Student.update(dbModel.connection, new Student("Isumi", "zumi", 1, 1))
 // Student.delete(dbModel.connection, 2)
 // Student.findById(dbModel.connection, 1)
-
-// Student.where(dbModel.connection, "firstname = 'Isumi'", function(data, err) {
-// 	if(!err) {
-// 		for(var i=0; i<data.length; i++) {
-// 			console.log(data[i]);
-// 		}
-//  } else {
-// 		       console.log('Error');
-// 		     }
-// 	}
-// })
-
-// Student.findAll(dbModel.connection, {limit:2, offset: 1}, function(data, err) {
-// 	if(!err) {
-// 		for(var i=0; i<data.length; i++) {
-// 			console.log(data[i]);
-// 		}
-//   } else {
-// 			console.log('Error');
-// 		}
-// })
-
+// Student.findAll(dbModel.connection, {limit:2, offset: 1}, function(data, err) { if(!err) { for(var i=0; i<data.length; i++) { console.log(data[i]); } } else { console.log('Error'); } })
+// Student.where(dbModel.connection, "firstname = 'Isumi'", function(data, err) {if(!err) {for(var i=0; i<data.length; i++) {console.log(data[i]);}} else {console.log('Error');}})
 // Student.findOrCreate(dbModel.connection, new Student("Isumi", "Karina", 1))
