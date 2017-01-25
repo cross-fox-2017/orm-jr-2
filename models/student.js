@@ -91,18 +91,45 @@ class Student {
     })
     // return true
   }
-  static findOrCreate(db, obj){
-    let FIND_OR_CREATE = `SELECT * FROM students WHERE firstname = '${obj.firstname}' AND lastname = '${obj.lastname}' AND cohortId = ${obj.cohortId}`
-    db.serialize(function () {
-      db.all(FIND_OR_CREATE, function (err, students) {
-        if (!err && students.length > 0) {
-          console.log('Student is Exist');
-        }else {
-          Student.createStudent()
-        }
+  static findOrCreate(connection, input) {
+      connection.serialize(function() {
+          let query = `SELECT * FROM students WHERE firstname='${input.firstname}' and lastname='${input.lastname}' and cohort_id='${input.cohort_id}'`;
+          connection.all(query, function(err, data) {
+              if (err) {
+                  console.log(err);
+              } else {
+                  if (data.length > 0) {
+                      console.log(data);
+                  } else {
+                      let queryInsert = `INSERT INTO students(firstname, lastname, cohort_id) VALUES ('${input.firstname}','${input.lastname}','${input.cohort_id}')`;
+                      connection.run(queryInsert, function(err) {
+                          if (err) {
+                              console.log(err);
+                          } else {
+                              console.log("INSERT_DATA SUCCESS");
+                          }
+                      })
+                  }
+              }
+          })
       })
-    })
+      return true;
+  }
+  where(connection, field) {
+      var search = function(err, data) {
+          if (!err) {
+              for (var i = 0; i < data.length; i++) {
+                  console.log(data[i])
+              }
+          } else {
+              console.log("Error");
+          }
+      }
+      connection.serialize(function() {
+          let query = `SELECT * from students where ${field}`;
+          connection.all(query, search)
+      })
+      return true;
   }
 }
-
 export default Student
