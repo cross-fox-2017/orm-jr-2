@@ -69,6 +69,7 @@ class Cohort {
         });
       });
   }
+
   static findAll(db,obj,callback){
     let SHOW_TABLE = `SELECT * FROM cohorts LIMIT ${obj.limit} OFFSET ${obj.offset};`;
       db.serialize(function() {

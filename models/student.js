@@ -72,6 +72,7 @@ class Student {
         });
       });
   }
+
   static findAll(db,obj,callback){
     let SHOW_TABLE = `SELECT * FROM students LIMIT ${obj.limit} OFFSET ${obj.offset};`;
       db.serialize(function() {
