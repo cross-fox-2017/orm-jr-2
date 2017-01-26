@@ -93,7 +93,7 @@ class Student {
   }
   static findOrCreate(connection, input) {
       connection.serialize(function() {
-          let query = `SELECT * FROM students WHERE firstname='${input.firstname}' and lastname='${input.lastname}' and cohort_id='${input.cohort_id}'`;
+          let query = `SELECT * FROM students WHERE firstname='${input.firstname}' and lastname='${input.lastname}' and cohortId='${input.cohortId}'`;
           connection.all(query, function(err, data) {
               if (err) {
                   console.log(err);
@@ -101,7 +101,7 @@ class Student {
                   if (data.length > 0) {
                       console.log(data);
                   } else {
-                      let queryInsert = `INSERT INTO students(firstname, lastname, cohort_id) VALUES ('${input.firstname}','${input.lastname}','${input.cohort_id}')`;
+                      let queryInsert = `INSERT INTO students(firstname, lastname, cohortId) VALUES ('${input.firstname}','${input.lastname}','${input.cohortId}')`;
                       connection.run(queryInsert, function(err) {
                           if (err) {
                               console.log(err);
